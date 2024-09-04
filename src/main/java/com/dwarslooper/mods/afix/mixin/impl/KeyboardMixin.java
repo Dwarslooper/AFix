@@ -23,13 +23,16 @@ import java.awt.*;
 @Mixin(Keyboard.class)
 public class KeyboardMixin {
 
+    @Unique
+    private long ctrlLastPressed;
+
     @Inject(method = "onKey", at = @At("HEAD"))
     public void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         GLFW.glfwSetInputMode(window, GLFW.GLFW_STICKY_KEYS, GLFW.GLFW_FALSE);
 
-        if(key == GLFW.GLFW_KEY_LEFT_CONTROL) strgLastPressed = Util.getMeasuringTimeMs();
+        if(key == GLFW.GLFW_KEY_LEFT_CONTROL) ctrlLastPressed = Util.getMeasuringTimeMs();
         if(key == GLFW.GLFW_KEY_RIGHT_ALT) {
-            long diff = Util.getMeasuringTimeMs() - strgLastPressed;
+            long diff = Util.getMeasuringTimeMs() - ctrlLastPressed;
             if(diff <= 1) {
                 try {
                     System.setProperty("java.awt.headless", "false"); // Try to disable headless mode again, if mixin failed
@@ -44,8 +47,5 @@ public class KeyboardMixin {
         }
 
     }
-
-    @Unique
-    private long strgLastPressed;
 
 }
