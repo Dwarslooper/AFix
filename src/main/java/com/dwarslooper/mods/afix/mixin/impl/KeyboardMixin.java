@@ -31,7 +31,7 @@ public class KeyboardMixin {
         GLFW.glfwSetInputMode(window, GLFW.GLFW_STICKY_KEYS, GLFW.GLFW_FALSE);
 
         if(key == GLFW.GLFW_KEY_LEFT_CONTROL) ctrlLastPressed = Util.getMeasuringTimeMs();
-        if(key == GLFW.GLFW_KEY_RIGHT_ALT) {
+        if(key == GLFW.GLFW_KEY_RIGHT_ALT && action != GLFW.GLFW_RELEASE) {
             long diff = Util.getMeasuringTimeMs() - ctrlLastPressed;
             if(diff <= 1) {
                 try {
