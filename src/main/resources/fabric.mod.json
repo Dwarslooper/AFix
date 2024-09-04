@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "afix",
+  "version": "${version}",
+  "name": "AFix",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/Dwarslooper/Cactus-Sherlock"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/afix/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.dwarslooper.mods.afix.AFixClient"
+    ]
+  },
+  "mixins": [
+    "afix.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
