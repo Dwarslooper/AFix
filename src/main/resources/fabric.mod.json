@@ -3,10 +3,13 @@
   "id": "afix",
   "version": "${version}",
   "name": "AFix",
-  "description": "",
-  "authors": [],
+  "description": "A mod to fix your 'Ctrl' key becoming stuck after pressing 'Alt Gr', causing 'a' being pressed to delete your entire input",
+  "authors": [
+    "Dwarslooper"
+  ],
   "contact": {
-    "repo": "https://github.com/Dwarslooper/Cactus-Sherlock"
+    "repo": "https://github.com/Dwarslooper/AFix",
+    "issues": "https://github.com/Dwarslooper/AFix/issues"
   },
   "license": "All-Rights-Reserved",
   "icon": "assets/afix/icon.png",
