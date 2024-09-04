@@ -25,23 +25,32 @@ public class KeyboardMixin {
 
     @Unique
     private long ctrlLastPressed;
+    @Unique
+    private boolean isStuck;
 
     @Inject(method = "onKey", at = @At("HEAD"))
     public void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         GLFW.glfwSetInputMode(window, GLFW.GLFW_STICKY_KEYS, GLFW.GLFW_FALSE);
 
-        if(key == GLFW.GLFW_KEY_LEFT_CONTROL) ctrlLastPressed = Util.getMeasuringTimeMs();
-        if(key == GLFW.GLFW_KEY_RIGHT_ALT && action != GLFW.GLFW_RELEASE) {
-            long diff = Util.getMeasuringTimeMs() - ctrlLastPressed;
-            if(diff <= 1) {
-                try {
-                    System.setProperty("java.awt.headless", "false"); // Try to disable headless mode again, if mixin failed
-                    Robot robot = new Robot();
-                    robot.keyRelease(17);
-                } catch (HeadlessException e) {
-                    AFixClient.LOGGER.error("Headless mode is enabled, even though it shouldn't be", e);
-                } catch (AWTException e) {
-                    AFixClient.LOGGER.error("Unknown AWT error", e);
+        if(key == GLFW.GLFW_KEY_LEFT_CONTROL && action != GLFW.GLFW_RELEASE) ctrlLastPressed = Util.getMeasuringTimeMs();
+        if(key == GLFW.GLFW_KEY_RIGHT_ALT) {
+            if(action == GLFW.GLFW_RELEASE) {
+                if(isStuck) {
+                    try {
+                        System.setProperty("java.awt.headless", "false"); // Try to disable headless mode again, if mixin failed
+                        Robot robot = new Robot();
+                        robot.keyRelease(17);
+                    } catch (HeadlessException e) {
+                        AFixClient.LOGGER.error("Headless mode is enabled, even though it shouldn't be", e);
+                    } catch (AWTException e) {
+                        AFixClient.LOGGER.error("Unknown AWT error", e);
+                    }
+                    isStuck = false;
+                }
+            } else {
+                long diff = Util.getMeasuringTimeMs() - ctrlLastPressed;
+                if (diff <= 1) {
+                    isStuck = true;
                 }
             }
         }
